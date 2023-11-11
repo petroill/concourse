@@ -1,5 +1,9 @@
 ---
 resources:
+  - name: my-timer
+    type: time
+    source:
+      interval: 2m
   - name: resource-tutorial
     type: git
     source:
@@ -7,12 +11,14 @@ resources:
       branch: master
       git_config:
       - name: safe.directory
-        value: "*" # This allows all directories, use cautiously
+        value: "*" # This allows all directories, use carefully
 
 jobs:
   - name: job-hello-world
     public: true
     plan:
+      - get: my-timer
+        trigger: true
       - get: resource-tutorial
         trigger: true
       - task: hello-world
